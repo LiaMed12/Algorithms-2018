@@ -2,8 +2,10 @@ package lesson1
 
 import java.io.BufferedWriter
 import java.io.File
+import java.io.FileNotFoundException
 import java.util.*
 import kotlin.math.abs
+import kotlin.test.assertEquals
 
 abstract class AbstractTaskTests : AbstractFileTests() {
 
@@ -39,6 +41,37 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
+        try {
+            try {
+                sortTimes("input/time_in4.txt", "temp.txt")
+            } catch (e: NumberFormatException) {
+                assertEquals("Тип данных не соответствует", e.message)
+
+            }
+        } finally {
+            File("temp.txt").delete()
+        }
+        try {
+            try {
+                sortTimes("input/time_in5.txt", "temp.txt")
+            } catch (e: NumberFormatException) {
+                assertEquals("Тип данных не соответствует", e.message)
+
+            }
+        } finally {
+            File("temp.txt").delete()
+        }
+        try {
+            try {
+                sortTimes("input/time_in6.txt", "temp.txt")
+            } catch (e: FileNotFoundException) {
+                assertEquals("Файл не найден", e.message)
+
+            }
+        } finally {
+            File("temp.txt").delete()
+        }
+
     }
 
     protected fun sortAddresses(sortAddresses: (String, String) -> Unit) {
@@ -98,6 +131,38 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
+        try {
+            try {
+                sortTemperatures("input/temp_in3.txt", "temp.txt")
+            } catch (e: NumberFormatException) {
+                assertEquals("Температура выходит за пределы дозволиной", e.message)
+
+            }
+        } finally {
+            File("temp.txt").delete()
+        }
+        try {
+            try {
+                sortTemperatures("input/temp_in4.txt", "temp.txt")
+            } catch (e: NumberFormatException) {
+                assertEquals("Неверный формат", e.message)
+
+            }
+        } finally {
+            File("temp.txt").delete()
+        }
+        try {
+            try {
+                sortTemperatures("input/temp_in5.txt", "temp.txt")
+            } catch (e: FileNotFoundException) {
+                assertEquals("Файл не найден", e.message)
+
+            }
+        } finally {
+            File("temp.txt").delete()
+        }
+
+
 
         fun testGeneratedTemperatures(size: Int) {
             try {

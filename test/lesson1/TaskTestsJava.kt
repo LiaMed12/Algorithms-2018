@@ -1,8 +1,8 @@
 package lesson1
 
+import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Tag
-import kotlin.test.Test
 
 class TaskTestsJava : AbstractTaskTests() {
 
