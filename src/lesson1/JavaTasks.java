@@ -53,9 +53,9 @@ public class JavaTasks {
             String line = scanner.nextLine();
             times.add(line);
         }
-        if (times.size()==0)throw new TimeoutException("null");
+        if (times.size()==0)throw new TimeoutException();
         if (times.size() == 1 && !(times.get(0).matches("^\\d[0-9]\\:\\d[0-9]\\:\\d[0-9]$"))) {
-            throw new NumberFormatException("Тип данных не соответствует");
+            throw new NumberFormatException();
         }
         for (int min = 0; min < times.size() - 1; min++) {
             int least = min;
@@ -79,7 +79,7 @@ public class JavaTasks {
 
     public static Integer convertStringToSeconds(String line) {
         if (!(line.matches("^\\d[0-9]\\:\\d[0-9]\\:\\d[0-9]$"))) {
-            throw new NumberFormatException("Тип данных не соответствует");
+            throw new NumberFormatException();
         }
         String[] parts = line.split(":");
         int result = 0;
@@ -157,7 +157,7 @@ public class JavaTasks {
         try {
             scanner = new Scanner(file);
         } catch (FileNotFoundException e) {
-            throw new FileNotFoundException("Файл не найден");
+            throw new FileNotFoundException();
         }
 
         ArrayList<Double> temperature = new ArrayList<>();
@@ -167,7 +167,7 @@ public class JavaTasks {
                 double temp = Double.parseDouble(line);
                 temperature.add(temp);
             } catch (NumberFormatException e) {
-                throw new NumberFormatException("Неверный формат");
+                throw new NumberFormatException();
             }
 
         }
@@ -176,7 +176,7 @@ public class JavaTasks {
             double key = temperature.get(j);
             while (i >= 0 && temperature.get(i) > key) {
                 if (temperature.get(i) > 500.0 && temperature.get(i) < -273.0) {
-                    throw new NumberFormatException("Температура выходит за пределы дозволиной");
+                    throw new NumberFormatException();
                 }
                 temperature.set(i + 1, temperature.get(i));
                 i--;
