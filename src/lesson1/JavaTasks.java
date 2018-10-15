@@ -38,7 +38,7 @@ public class JavaTasks {
      * <p>
      * В случае обнаружения неверного формата файла бросить любое исключение.
      */
-    static public void sortTimes(String inputName, String outputName) throws IOException, TimeoutException {
+    static public void sortTimes(String inputName, String outputName) throws IOException {
         File file = new File(inputName);
         FileWriter out = new FileWriter(outputName);
         Scanner scanner;
