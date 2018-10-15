@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeoutException;
 
 @SuppressWarnings("unused")
 public class JavaTasks {
@@ -37,7 +38,7 @@ public class JavaTasks {
      * <p>
      * В случае обнаружения неверного формата файла бросить любое исключение.
      */
-    static public void sortTimes(String inputName, String outputName) throws IOException {
+    static public void sortTimes(String inputName, String outputName) throws IOException, TimeoutException {
         File file = new File(inputName);
         FileWriter out = new FileWriter(outputName);
         Scanner scanner;
