@@ -45,7 +45,7 @@ public class JavaTasks {
         try {
             scanner = new Scanner(file);
         } catch (FileNotFoundException e) {
-            throw new FileNotFoundException("Файл не найден");
+            throw new FileNotFoundException();
         }
 
         ArrayList<String> times = new ArrayList<>();

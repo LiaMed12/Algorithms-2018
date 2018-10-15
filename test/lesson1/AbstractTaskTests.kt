@@ -66,7 +66,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
             try {
                 sortTimes("input/time_in6.txt", "temp.txt")
             } catch (e: FileNotFoundException) {
-                assertEquals("Файл не найден", e.message)
+                assertEquals(null, e.message)
 
             }
         } finally {
