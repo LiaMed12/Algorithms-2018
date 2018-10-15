@@ -38,7 +38,7 @@ public class JavaTasks {
      * <p>
      * В случае обнаружения неверного формата файла бросить любое исключение.
      */
-    static public void sortTimes(String inputName, String outputName) throws IOException {
+    static public void sortTimes(String inputName, String outputName) throws IOException, TimeoutException {
         File file = new File(inputName);
         FileWriter out = new FileWriter(outputName);
         Scanner scanner;
@@ -53,6 +53,7 @@ public class JavaTasks {
             String line = scanner.nextLine();
             times.add(line);
         }
+        if (times.size()==0)throw new TimeoutException("null");
         if (times.size() == 1 && !(times.get(0).matches("^\\d[0-9]\\:\\d[0-9]\\:\\d[0-9]$"))) {
             throw new NumberFormatException("Тип данных не соответствует");
         }

@@ -4,6 +4,7 @@ import java.io.BufferedWriter
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
+import java.util.concurrent.TimeoutException
 import kotlin.math.abs
 import kotlin.test.assertEquals
 
@@ -66,6 +67,16 @@ abstract class AbstractTaskTests : AbstractFileTests() {
                 sortTimes("input/time_in6.txt", "temp.txt")
             } catch (e: FileNotFoundException) {
                 assertEquals("Файл не найден", e.message)
+
+            }
+        } finally {
+            File("temp.txt").delete()
+        }
+        try {
+            try {
+                sortTimes("input/time_in7.txt", "temp.txt")
+            } catch (e: TimeoutException) {
+                assertEquals("null", e.message)
 
             }
         } finally {
