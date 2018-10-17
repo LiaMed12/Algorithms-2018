@@ -52,8 +52,7 @@ public class JavaTasks {
             }
             Collections.sort(listOfTimes);
             for (Object el :listOfTimes) {
-                out.write(String.format("^\\d[0-9]\\:\\d[0-9]\\:\\d[0-9]$\n",
-                        (int) el / 3600, ((int)el % 3600) / 60, (int) el % 60));
+                out.write(String.format("%02d:%02d:%02d\n", (int) el / 3600, ((int)el % 3600) / 60, (int) el % 60));
             }
             out.close();
 
