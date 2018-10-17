@@ -100,7 +100,7 @@ public class JavaAlgorithms {
         int[][] matrix = new int[firs.length()][second.length()];
         int maxValue = 0;
         String substring = "";
-        int stroka = 0;
+        int maximumLine = 0;
         for (int i = 0; i != firs.length(); i++) {
             for (int j = 0; j != second.length(); j++) {
                 char first = firs.charAt(i);
@@ -117,16 +117,16 @@ public class JavaAlgorithms {
                         }
                         if (maxValue < matrix[i][j]) {
                             maxValue = matrix[i][j];
-                            stroka = i;
+                            maximumLine = i;
                         }
                     }
                 }
             }
         }
         while (maxValue != 0) {
-            substring += firs.charAt(stroka);
+            substring += firs.charAt(maximumLine);
             maxValue--;
-            stroka--;
+            maximumLine--;
         }
         String result = new StringBuffer(substring).reverse().toString();
         return result;

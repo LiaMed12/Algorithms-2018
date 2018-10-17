@@ -3,9 +3,7 @@ package lesson1;
 import kotlin.NotImplementedError;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.TimeoutException;
 
 @SuppressWarnings("unused")
@@ -38,57 +36,32 @@ public class JavaTasks {
      * <p>
      * В случае обнаружения неверного формата файла бросить любое исключение.
      */
-    static public void sortTimes(String inputName, String outputName) throws IOException, TimeoutException {
-        File file = new File(inputName);
-        FileWriter out = new FileWriter(outputName);
-        Scanner scanner;
+    static public void sortTimes(String inputName, String outputName) throws IOException {
+        ArrayList listOfTimes = new ArrayList<Double>();
         try {
-            scanner = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            throw new FileNotFoundException();
-        }
-
-        ArrayList<String> times = new ArrayList<>();
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            times.add(line);
-        }
-        if (times.size()==0)throw new TimeoutException();
-        if (times.size() == 1 && !(times.get(0).matches("^\\d[0-9]\\:\\d[0-9]\\:\\d[0-9]$"))) {
-            throw new NumberFormatException();
-        }
-        for (int min = 0; min < times.size() - 1; min++) {
-            int least = min;
-            for (int j = min + 1; j < times.size(); j++) {
-                if (convertStringToSeconds(times.get(j)) < convertStringToSeconds(times.get(least))) {
-                    least = j;
+            FileReader file = new FileReader(inputName);
+            FileWriter out = new FileWriter(outputName);
+            Scanner line = new Scanner(file);
+            while (line.hasNext()) {
+                int result = 0;
+                for (String part : line.nextLine().split(":")) {
+                    int number = Integer.parseInt(part);
+                    result = result * 60 + number;
                 }
+                listOfTimes.add(result);
             }
-            String tmp = times.get(min);
-            times.set(min, times.get(least));
-            times.set(least,tmp);
-        }
+            Collections.sort(listOfTimes);
+            for (Object el :listOfTimes) {
+                out.write(String.format("^\\d[0-9]\\:\\d[0-9]\\:\\d[0-9]$\n",
+                        (int) el / 3600, ((int)el % 3600) / 60, (int) el % 60));
+            }
+            out.close();
 
-        for (String string : times) {
-            out.write(string + "\n");
+        } catch (Exception e) {
+            throw e;
         }
-        out.close();
     }
-    //Сортировка выбором: выполнение в худшем, среднем и лучшем случае O(n^2)
-    //Ресурсоемкость: О(n)
 
-    public static Integer convertStringToSeconds(String line) {
-        if (!(line.matches("^\\d[0-9]\\:\\d[0-9]\\:\\d[0-9]$"))) {
-            throw new NumberFormatException();
-        }
-        String[] parts = line.split(":");
-        int result = 0;
-        for (String part : parts) {
-            int number = Integer.parseInt(part);
-            result = result * 60 + number;
-        }
-        return result;
-    }
 
     /**
      * Сортировка адресов
@@ -151,45 +124,51 @@ public class JavaTasks {
      * 121.3
      */
     static public void sortTemperatures(String inputName, String outputName) throws IOException {
-        File file = new File(inputName);
-        FileWriter jan = new FileWriter(outputName);
-        Scanner scanner;
+        ArrayList temperatures = new ArrayList<Double>();
         try {
-            scanner = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            throw new FileNotFoundException();
-        }
-
-        ArrayList<Double> temperature = new ArrayList<>();
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            try {
-                double temp = Double.parseDouble(line);
-                temperature.add(temp);
-            } catch (NumberFormatException e) {
-                throw new NumberFormatException();
-            }
-
-        }
-        for (int j = 1; j < temperature.size(); j++) {
-            int i = j - 1;
-            double key = temperature.get(j);
-            while (i >= 0 && temperature.get(i) > key) {
-                if (temperature.get(i) > 500.0 && temperature.get(i) < -273.0) {
+            FileReader fileIn = new FileReader(inputName);
+            FileWriter fileOut = new FileWriter(outputName);
+            Scanner line = new Scanner(fileIn);
+            while (line.hasNext()) {
+                double temp = Double.parseDouble(line.nextLine());
+                if (temp > 500.0 || temp < -273.0) {
                     throw new NumberFormatException();
                 }
-                temperature.set(i + 1, temperature.get(i));
-                i--;
+                temperatures.add(temp);
             }
-            temperature.set(i + 1, key);
+            double[] doubleList = temperatures.stream().mapToDouble(i -> (double) i).toArray();
+            mergeSort(doubleList, 0, doubleList.length);
+            for (double el : doubleList) {
+                fileOut.write(String.valueOf(el) + "\n");
+            }
+            fileOut.close();
+        } catch (Exception e) {
+            throw e;
         }
-        for (Double element : temperature) {
-            jan.write(element + "\n");
-        }
-        jan.close();
     }
-    //Сортировка вставками: Худшее время О(n2) сравнений, обменов, лучшее время	O(n) сравнений, 0 обменов
-    //Среднее время	О(n2) сравнений, обменов
+
+    private static void merge(double[] elements, int begin, int middle, int end) {
+        double[] left = Arrays.copyOfRange(elements, begin, middle);
+        double[] right = Arrays.copyOfRange(elements, middle, end);
+        int li = 0, ri = 0;
+        for (int i = begin; i < end; i++) {
+            if (li < left.length && (ri == right.length || left[li] <= right[ri])) {
+                elements[i] = left[li++];
+            } else {
+                elements[i] = right[ri++];
+            }
+        }
+    }
+
+    private static void mergeSort(double[] elements, int begin, int end) {
+        if (end - begin <= 1) return;
+        int middle = (begin + end) / 2;
+        mergeSort(elements, begin, middle);
+        mergeSort(elements, middle, end);
+        merge(elements, begin, middle, end);
+    }
+
+    //Сортировка слиянием: Худшее время	O(n log n), Лучшее время O(n log n), Среднее время	O(n log n)
     //Ресурсоемкость: О(n)
 
     /**
