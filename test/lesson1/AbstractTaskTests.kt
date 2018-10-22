@@ -7,6 +7,7 @@ import java.util.*
 import java.util.concurrent.TimeoutException
 import kotlin.math.abs
 import kotlin.test.assertEquals
+import kotlin.test.fail
 
 abstract class AbstractTaskTests : AbstractFileTests() {
 
@@ -43,35 +44,29 @@ abstract class AbstractTaskTests : AbstractFileTests() {
             File("temp.txt").delete()
         }
         try {
-            try {
-                sortTimes("input/time_in4.txt", "temp.txt")
-            } catch (e: NumberFormatException) {
-                assertEquals("java.lang.NumberFormatException", e.toString().split(":")[0])
+            sortTimes("input/time_in4.txt", "temp.txt")
+            fail("java.lang.NumberFormatException")
+        } catch (e: NumberFormatException) {
+            assertEquals("java.lang.NumberFormatException", e.toString().split(":")[0])
 
-            }
-        } finally {
-            File("temp.txt").delete()
         }
+
         try {
-            try {
-                sortTimes("input/time_in5.txt", "temp.txt")
-            } catch (e: NumberFormatException) {
-                assertEquals("java.lang.NumberFormatException", e.toString().split(":")[0])
+            sortTimes("input/time_in5.txt", "temp.txt")
+            fail("java.lang.NumberFormatException")
+        } catch (e: NumberFormatException) {
+            assertEquals("java.lang.NumberFormatException", e.toString().split(":")[0])
 
-            }
-        } finally {
-            File("temp.txt").delete()
         }
+
         try {
-            try {
-                sortTimes("input/time_in6.txt", "temp.txt")
-            } catch (e: FileNotFoundException) {
-                assertEquals("java.io.FileNotFoundException", e.toString().split(":")[0])
+            sortTimes("input/time_in6.txt", "temp.txt")
+            fail("java.io.FileNotFoundException")
+        } catch (e: FileNotFoundException) {
+            assertEquals("java.io.FileNotFoundException", e.toString().split(":")[0])
 
-            }
-        } finally {
-            File("temp.txt").delete()
         }
+
 
     }
 
@@ -133,38 +128,24 @@ abstract class AbstractTaskTests : AbstractFileTests() {
             File("temp.txt").delete()
         }
         try {
-            try {
-                sortTemperatures("input/temp_in3.txt", "temp.txt")
-            } catch (e: NumberFormatException) {
-                assertEquals("java.lang.NumberFormatException", e.toString())
-
-            }
-        } finally {
-            File("temp.txt").delete()
+            sortTemperatures("input/temp_in3.txt", "temp.txt")
+            fail("java.lang.NumberFormatException")
+        } catch (e: NumberFormatException) {
+            assertEquals("java.lang.NumberFormatException", e.toString())
         }
         try {
-            try {
-                sortTemperatures("input/temp_in4.txt", "temp.txt")
-            } catch (e: NumberFormatException) {
-                assertEquals("java.lang.NumberFormatException", e.toString().split(":")[0])
-
-            }
-        } finally {
-            File("temp.txt").delete()
+            sortTemperatures("input/temp_in4.txt", "temp.txt")
+            fail("java.lang.NumberFormatException")
+        } catch (e: NumberFormatException) {
+            assertEquals("java.lang.NumberFormatException", e.toString().split(":")[0])
         }
         try {
-            try {
-                sortTemperatures("input/temp_in5.txt", "temp.txt")
-            } catch (e: FileNotFoundException) {
-                assertEquals("java.io.FileNotFoundException",
-                        e.toString().split(":")[0])
-
-            }
-        } finally {
-            File("temp.txt").delete()
+            sortTemperatures("input/temp_in5.txt", "temp.txt")
+            fail("java.io.FileNotFoundException")
+        } catch (e: FileNotFoundException) {
+            assertEquals("java.io.FileNotFoundException",
+                    e.toString().split(":")[0])
         }
-
-
 
         fun testGeneratedTemperatures(size: Int) {
             try {

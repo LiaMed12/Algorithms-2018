@@ -37,29 +37,26 @@ public class JavaTasks {
      * В случае обнаружения неверного формата файла бросить любое исключение.
      */
     static public void sortTimes(String inputName, String outputName) throws IOException {
-        ArrayList listOfTimes = new ArrayList<Double>();
-        try {
-            FileReader file = new FileReader(inputName);
-            FileWriter out = new FileWriter(outputName);
-            Scanner line = new Scanner(file);
-            while (line.hasNext()) {
-                int result = 0;
-                for (String part : line.nextLine().split(":")) {
-                    int number = Integer.parseInt(part);
-                    result = result * 60 + number;
-                }
-                listOfTimes.add(result);
+        ArrayList<Integer> listOfTimes = new ArrayList<>();
+        FileReader file = new FileReader(inputName);
+        FileWriter out = new FileWriter(outputName);
+        Scanner line = new Scanner(file);
+        while (line.hasNext()) {
+            int result = 0;
+            for (String part : line.nextLine().split(":")) {
+                int number = Integer.parseInt(part);
+                result = result * 60 + number;
             }
-            Collections.sort(listOfTimes);
-            for (Object el :listOfTimes) {
-                out.write(String.format("%02d:%02d:%02d\n", (int) el / 3600, ((int)el % 3600) / 60, (int) el % 60));
-            }
-            out.close();
-
-        } catch (Exception e) {
-            throw e;
+            listOfTimes.add(result);
         }
+        Collections.sort(listOfTimes);
+        for (Object el : listOfTimes) {
+            out.write(String.format("%02d:%02d:%02d\n", (int) el / 3600, ((int) el % 3600) / 60, (int) el % 60));
+        }
+        out.close();
     }
+    // Трудоемкость: O(n*log(n))
+    // Ресурсоемкость: O(n)
 
 
     /**
@@ -124,7 +121,6 @@ public class JavaTasks {
      */
     static public void sortTemperatures(String inputName, String outputName) throws IOException {
         ArrayList temperatures = new ArrayList<Double>();
-        try {
             FileReader fileIn = new FileReader(inputName);
             FileWriter fileOut = new FileWriter(outputName);
             Scanner line = new Scanner(fileIn);
@@ -141,9 +137,6 @@ public class JavaTasks {
                 fileOut.write(String.valueOf(el) + "\n");
             }
             fileOut.close();
-        } catch (Exception e) {
-            throw e;
-        }
     }
 
     private static void merge(double[] elements, int begin, int middle, int end) {
