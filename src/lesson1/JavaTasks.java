@@ -37,7 +37,7 @@ public class JavaTasks {
      * В случае обнаружения неверного формата файла бросить любое исключение.
      */
     static public void sortTimes(String inputName, String outputName) throws IOException {
-        ArrayList<Integer> listOfTimes = new ArrayList<>();
+        ArrayList<Integer> listOfTimes = new ArrayList<Integer>();
         FileReader file = new FileReader(inputName);
         FileWriter out = new FileWriter(outputName);
         Scanner line = new Scanner(file);
@@ -121,22 +121,22 @@ public class JavaTasks {
      */
     static public void sortTemperatures(String inputName, String outputName) throws IOException {
         ArrayList temperatures = new ArrayList<Double>();
-            FileReader fileIn = new FileReader(inputName);
-            FileWriter fileOut = new FileWriter(outputName);
-            Scanner line = new Scanner(fileIn);
-            while (line.hasNext()) {
-                double temp = Double.parseDouble(line.nextLine());
-                if (temp > 500.0 || temp < -273.0) {
-                    throw new NumberFormatException();
-                }
-                temperatures.add(temp);
+        FileReader fileIn = new FileReader(inputName);
+        FileWriter fileOut = new FileWriter(outputName);
+        Scanner line = new Scanner(fileIn);
+        while (line.hasNext()) {
+            double temp = Double.parseDouble(line.nextLine());
+            if (temp > 500.0 || temp < -273.0) {
+                throw new NumberFormatException();
             }
-            double[] doubleList = temperatures.stream().mapToDouble(i -> (double) i).toArray();
-            mergeSort(doubleList, 0, doubleList.length);
-            for (double el : doubleList) {
-                fileOut.write(String.valueOf(el) + "\n");
-            }
-            fileOut.close();
+            temperatures.add(temp);
+        }
+        double[] doubleList = temperatures.stream().mapToDouble(i -> (double) i).toArray();
+        mergeSort(doubleList, 0, doubleList.length);
+        for (double el : doubleList) {
+            fileOut.write(String.valueOf(el) + "\n");
+        }
+        fileOut.close();
     }
 
     private static void merge(double[] elements, int begin, int middle, int end) {

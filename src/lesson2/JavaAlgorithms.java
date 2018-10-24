@@ -131,7 +131,8 @@ public class JavaAlgorithms {
         String result = new StringBuffer(substring).reverse().toString();
         return result;
     }
-    // O(nm)
+    // Трудоемкость: О(nm)
+    // Ресурсоемкость: O(nm)
 
     /**
      * Число простых чисел в интервале
@@ -161,7 +162,8 @@ public class JavaAlgorithms {
         }
         return true;
     }
-    //O(n)
+    //Трудоемкость: O(n log(log(n)))
+    //Ресурсоемкоть: O(n)
 
     /**
      * Балда

@@ -11,11 +11,13 @@ import java.util.*;
 public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implements CheckableSortedSet<T> {
 
     private static class Node<T> {
-        final T value;
+        T value;
 
         Node<T> left = null;
 
         Node<T> right = null;
+
+        Node<T> parents = null;//родительский узел
 
         Node(T value) {
             this.value = value;
@@ -64,7 +66,45 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
      */
     @Override
     public boolean remove(Object o) {
-        throw new NotImplementedError();
+        T t = (T) o;
+        Node<T> deleteds = find(t);
+        int comparison = deleteds == null ? -1 : t.compareTo(deleteds.value);
+        if (comparison == 0) {
+            deleted(root, t);
+            size--;
+            return true;
+        }
+        return false;
+    }
+
+
+    public Node<T> deleted(Node<T> roots, T t) {
+        int comparisonsa = t.compareTo(roots.value);
+        if(roots==null){
+            return roots;
+        }
+        if (comparisonsa < 0) {
+            roots.left = deleted(roots.left, t);
+        } else if (comparisonsa > 0) {
+            roots.right = deleted(roots.right, t);
+        } else if (roots.left != null && roots.right != null) {
+            roots.value = minimum(roots.right).value;
+            roots.right = deleted(roots.right, roots.value);
+        } else {
+            if (roots.left != null) {
+                roots = roots.left;
+            } else {
+                roots = roots.right;
+            }
+        }
+        return roots;
+    }
+
+    //!
+    public Node<T> minimum(Node<T> t) {
+        if (t.left == null)
+            return t;
+        return minimum(t.left);
     }
 
 
@@ -106,8 +146,19 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
          * Средняя
          */
         private Node<T> findNext() {
-            throw new NotImplementedError();
+            Node<T> current = root, successor = null;// root — корень дерева
+            int comparison = root.value.compareTo(current.value);
+            while (current != null) {
+                if (comparison < 0) {
+                    successor = current;
+                    current = current.left;
+                } else
+                    current = current.right;
+            }
+            return successor;
         }
+
+
 
         @Override
         public boolean hasNext() {
