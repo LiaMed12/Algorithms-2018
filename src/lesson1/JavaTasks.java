@@ -37,7 +37,7 @@ public class JavaTasks {
      * В случае обнаружения неверного формата файла бросить любое исключение.
      */
     static public void sortTimes(String inputName, String outputName) throws IOException {
-        ArrayList<Integer> listOfTimes = new ArrayList<Integer>();
+        List<Integer> listOfTimes = new ArrayList<>();
         FileReader file = new FileReader(inputName);
         FileWriter out = new FileWriter(outputName);
         Scanner line = new Scanner(file);
@@ -53,6 +53,8 @@ public class JavaTasks {
         for (Object el : listOfTimes) {
             out.write(String.format("%02d:%02d:%02d\n", (int) el / 3600, ((int) el % 3600) / 60, (int) el % 60));
         }
+        line.close();
+        file.close();
         out.close();
     }
     // Трудоемкость: O(n*log(n))
@@ -85,9 +87,50 @@ public class JavaTasks {
      * <p>
      * В случае обнаружения неверного формата файла бросить любое исключение.
      */
-    static public void sortAddresses(String inputName, String outputName) {
-        throw new NotImplementedError();
+    static public void sortAddresses(String inputName, String outputName) throws IOException {
+        List<List<String>> previousLines = new ArrayList<>();
+        Map<String, Set<String>> overwrittenLines = new TreeMap<>();
+        FileReader fileIn = new FileReader(inputName);
+        FileWriter fileOut = new FileWriter(outputName);
+        Scanner scanner = new Scanner(fileIn);
+        while (scanner.hasNext()) {
+            String line = scanner.nextLine();
+            if (!line.matches("^[A-z,А-я]+ [A-z,А-я]+ - [A-z,А-я]+ \\d+$")) {
+                throw new NumberFormatException();
+            } else {
+                String[] nameAndAddresses = line.split(" - ");
+                previousLines.add(Arrays.asList(nameAndAddresses[0], nameAndAddresses[1]));
+            }
+        }
+        for (List<String> element : previousLines) {
+            String address = element.get(1);
+            String name = element.get(0);
+            if (overwrittenLines.containsKey(address)) {
+                overwrittenLines.get(address).add(name);
+            } else {
+                Set<String> names = new TreeSet<>();
+                names.add(name);
+                overwrittenLines.put(address, names);
+            }
+        }
+        for (String e : overwrittenLines.keySet()) {
+            StringBuffer listOfNamesOfAddress = new StringBuffer();
+            Set<String> namesLot = overwrittenLines.get(e);
+            if (namesLot.size() != 1) {
+                for (int i = 0; i != namesLot.size() - 1; i++) {
+                    listOfNamesOfAddress.append(namesLot.toArray()[i]);
+                    listOfNamesOfAddress.append(", ");
+                }
+            }
+            listOfNamesOfAddress.append(namesLot.toArray()[namesLot.size()-1]);
+            fileOut.write(e + " - " + listOfNamesOfAddress + "\n");
+        }
+        scanner.close();
+        fileIn.close();
+        fileOut.close();
     }
+    //Трудоемкость: O(n * log(n))
+    //Ресурсоемкость: O(n)
 
     /**
      * Сортировка температур
@@ -120,7 +163,7 @@ public class JavaTasks {
      * 121.3
      */
     static public void sortTemperatures(String inputName, String outputName) throws IOException {
-        ArrayList temperatures = new ArrayList<Double>();
+        ArrayList<Double> temperatures = new ArrayList<>();
         FileReader fileIn = new FileReader(inputName);
         FileWriter fileOut = new FileWriter(outputName);
         Scanner line = new Scanner(fileIn);
@@ -136,6 +179,8 @@ public class JavaTasks {
         for (double el : doubleList) {
             fileOut.write(String.valueOf(el) + "\n");
         }
+        line.close();
+        fileIn.close();
         fileOut.close();
     }
 
@@ -211,8 +256,6 @@ public class JavaTasks {
      * Результат: second = [1 3 4 9 9 13 15 20 23 28]
      */
     static <T extends Comparable<T>> void mergeArrays(T[] first, T[] second) {
-
-
         throw new NotImplementedError();
     }
 }

@@ -71,7 +71,19 @@ abstract class AbstractTaskTests : AbstractFileTests() {
     }
 
     protected fun sortAddresses(sortAddresses: (String, String) -> Unit) {
-        // TODO: large test
+        try {
+            sortAddresses("input/addr_in2.txt", "temp.txt")
+            assertFileContent("temp.txt",
+                    """
+                    Twain 12 - Becky Thatcher
+                    Twain 13 - Tom Sawyer
+
+                """.trimIndent()
+            )
+        } finally {
+            File("temp.txt").delete()
+        }
+
         try {
             sortAddresses("input/addr_in1.txt", "temp.txt")
             assertFileContent("temp.txt",
@@ -84,6 +96,21 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
+
+        try {
+            sortAddresses("input/addr_in3.txt", "temp.txt")
+            fail("java.lang.NumberFormatException")
+        } catch (e: NumberFormatException) {
+            assertEquals("java.lang.NumberFormatException", e.toString())
+        }
+
+        try {
+            sortAddresses("input/addr_in5.txt", "temp.txt")
+            fail("java.lang.NumberFormatException")
+        } catch (e: NumberFormatException) {
+            assertEquals("java.lang.NumberFormatException", e.toString())
+        }
+
     }
 
     private fun generateTemperatures(size: Int) {
