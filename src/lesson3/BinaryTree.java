@@ -11,7 +11,7 @@ import java.util.*;
 public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implements CheckableSortedSet<T> {
 
     private static class Node<T> {
-        final T value;
+        T value;
 
         Node<T> left = null;
 
@@ -64,9 +64,53 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
      */
     @Override
     public boolean remove(Object o) {
-        throw new NotImplementedError();
+        T point = (T) o;
+        boolean checkContains = contains(o);
+        if (checkContains == true) {
+            deleteItemInSubtree(root, point);
+            size--;
+        }
+        return true;
     }
 
+    public Node<T> deleteItemInSubtree(Node<T> rootTree, T point) {
+        if(size==1){
+            return root = null;
+        }
+        int comparisonSearchTree = point.compareTo(rootTree.value);
+        if (comparisonSearchTree < 0) {
+            rootTree.left = deleteItemInSubtree(rootTree.left, point);
+        } else if (comparisonSearchTree > 0) {
+            rootTree.right = deleteItemInSubtree(rootTree.right, point);
+        } else if ((rootTree.left != null && rootTree.right != null) || rootTree.right != null) {
+            rootTree.value = minimumItemInSubtree(rootTree.right).value;
+            rootTree.right = deleteItemInSubtree(rootTree.right, rootTree.value);
+        } else {
+            if (rootTree.left != null) {
+                rootTree.value = maximumItemInSubtree(rootTree.left).value;
+                rootTree.left = deleteItemInSubtree(rootTree.left, rootTree.value);
+            } else {
+                rootTree = null;
+            }
+        }
+        return rootTree;
+    }
+    //Идея для реализации была взята с сайта https://neerc.ifmo.ru/wikiindex.php?title=Дерево_поиска,_наивная_реализация
+    // (удаление рекурсивная реализация)
+    //Ресурсоемкость:O(h), h - высота дерева
+    //Трудоемкость:O(h)
+
+    public Node<T> minimumItemInSubtree(Node<T> t) {
+        if (t.left != null)
+            return minimumItemInSubtree(t.left);
+        return t;
+    }
+
+    public Node<T> maximumItemInSubtree(Node<T> t) {
+        if (t.right != null)
+            return maximumItemInSubtree(t.right);
+        return t;
+    }
 
     @Override
     public boolean contains(Object o) {
@@ -106,9 +150,35 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
          * Средняя
          */
         private Node<T> findNext() {
-            throw new NotImplementedError();
+            Node<T> point;
+            if (root==null){
+                return null;
+            }
+            if (current == null) {
+                return find(first());
+            } else {
+                point = current;
+            }
+            if (point.right != null) {
+                return minimumItemInSubtree(point.right);
+            } else {
+                Node<T> searchPoint = null;
+                Node<T> ancestor = root;
+                while (ancestor != point) {
+                    int comparison = point.value.compareTo(ancestor.value);
+                    if (comparison > 0) {
+                        ancestor = ancestor.right;
+                    } else {
+                        searchPoint = ancestor;
+                        ancestor = ancestor.left;
+                    }
+                }
+                return searchPoint;
+            }
         }
 
+        //Ресурсоемкость:O(h), h - высота дерева
+        //Трудоемкость:O(h)
 
 
         @Override
