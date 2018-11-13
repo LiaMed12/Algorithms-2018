@@ -74,7 +74,7 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
     }
 
     public Node<T> deleteItemInSubtree(Node<T> rootTree, T point) {
-        if(size==1){
+        if (size == 1) {
             return root = null;
         }
         int comparisonSearchTree = point.compareTo(rootTree.value);
@@ -98,7 +98,7 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
     //Идея для реализации была взята с сайта https://neerc.ifmo.ru/wikiindex.php?title=Дерево_поиска,_наивная_реализация
     // (удаление рекурсивная реализация)
     //Ресурсоемкость:O(h), h - высота дерева
-    //Трудоемкость:O(h)
+    //Трудоемкость: O(h) - худший случай, O(logN) - в остальных случаях
 
     public Node<T> minimumItemInSubtree(Node<T> t) {
         if (t.left != null)
@@ -151,7 +151,7 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
          */
         private Node<T> findNext() {
             Node<T> point;
-            if (root==null){
+            if (root == null) {
                 return null;
             }
             if (current == null) {
@@ -164,7 +164,7 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
             } else {
                 Node<T> searchPoint = null;
                 Node<T> ancestor = root;
-                while (ancestor != point) {
+                while (ancestor != point && ancestor != null) {
                     int comparison = point.value.compareTo(ancestor.value);
                     if (comparison > 0) {
                         ancestor = ancestor.right;
@@ -178,7 +178,7 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
         }
 
         //Ресурсоемкость:O(h), h - высота дерева
-        //Трудоемкость:O(h)
+        //Трудоемкость: O(h) - худший случай, O(logN) - в остальных случаях
 
 
         @Override
@@ -199,10 +199,12 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
          */
         @Override
         public void remove() {
-            // TODO
-            throw new NotImplementedError();
+            if (current != null) {
+                BinaryTree.this.remove(current.value);
+            }
         }
-
+        //Трудоемкость: O(h) - худший случай, O(logN) - в остальных случаях
+        //Ресурсоемкость: O(1)
     }
 
     @NotNull
