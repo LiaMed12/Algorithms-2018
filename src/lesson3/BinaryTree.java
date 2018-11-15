@@ -73,7 +73,7 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
         return true;
     }
 
-    public Node<T> deleteItemInSubtree(Node<T> rootTree, T point) {
+    private Node<T> deleteItemInSubtree(Node<T> rootTree, T point) {
         if (size == 1) {
             return root = null;
         }
@@ -100,13 +100,13 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
     //Ресурсоемкость:O(h), h - высота дерева
     //Трудоемкость: O(h) - худший случай, O(logN) - в остальных случаях
 
-    public Node<T> minimumItemInSubtree(Node<T> t) {
+    private Node<T> minimumItemInSubtree(Node<T> t) {
         if (t.left != null)
             return minimumItemInSubtree(t.left);
         return t;
     }
 
-    public Node<T> maximumItemInSubtree(Node<T> t) {
+    private Node<T> maximumItemInSubtree(Node<T> t) {
         if (t.right != null)
             return maximumItemInSubtree(t.right);
         return t;
@@ -155,7 +155,7 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
                 return null;
             }
             if (current == null) {
-                return find(first());
+                return minimumItemInSubtree(root);
             } else {
                 point = current;
             }
@@ -243,9 +243,29 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
     @NotNull
     @Override
     public SortedSet<T> headSet(T toElement) {
-        // TODO
-        throw new NotImplementedError();
+        SortedSet<T> aSetOfSmallerItems = new TreeSet<>();
+        searchForManySmallerSet(toElement, root, aSetOfSmallerItems);
+        return aSetOfSmallerItems;
     }
+
+    private void searchForManySmallerSet(T toElement, Node<T> rootNode, SortedSet<T> smallItems) {
+        int comparison = rootNode.value.compareTo(toElement);
+        if (comparison < 0) {
+            smallItems.add(rootNode.value);
+            if (rootNode.right != null) {
+                searchForManySmallerSet(toElement, rootNode.right, smallItems);
+            }
+            if (rootNode.left != null) {
+                searchForManySmallerSet(toElement, rootNode.left, smallItems);
+            }
+        } else if (comparison == 0 && rootNode.left != null) {
+            searchForManySmallerSet(toElement, rootNode.left, smallItems);
+
+        }
+    }
+    //Ресурсоемкость:O(h), h - высота дерева
+    //Трудоемкость: O(h) - худший случай, O(logN) - в остальных случаях
+
 
     /**
      * Найти множество всех элементов больше или равных заданного
@@ -254,9 +274,27 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
     @NotNull
     @Override
     public SortedSet<T> tailSet(T fromElement) {
-        // TODO
-        throw new NotImplementedError();
+        SortedSet<T> aSetOfLargeOrEqualItems = new TreeSet<>();
+        searchForMultipleOrEqualSet(fromElement, root, aSetOfLargeOrEqualItems);
+        return aSetOfLargeOrEqualItems;
     }
+
+    private void searchForMultipleOrEqualSet(T fromElement, Node<T> rootNode, SortedSet<T> bigItems) {
+        int comparison = rootNode.value.compareTo(fromElement);
+        if (comparison >= 0) {
+            bigItems.add(rootNode.value);
+            if (rootNode.right != null) {
+                searchForMultipleOrEqualSet(fromElement, rootNode.right, bigItems);
+            }
+            if (rootNode.left != null) {
+                searchForMultipleOrEqualSet(fromElement, rootNode.left, bigItems);
+            }
+        }else if (rootNode.right!=null){
+            searchForMultipleOrEqualSet(fromElement, rootNode.right, bigItems);
+        }
+    }
+    //Ресурсоемкость:O(h), h - высота дерева
+    //Трудоемкость: O(h) - худший случай, O(logN) - в остальных случаях
 
     @Override
     public T first() {

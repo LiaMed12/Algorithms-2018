@@ -19,6 +19,8 @@ abstract class AbstractHeadTailTest {
         tree.add(4)
         tree.add(3)
         tree.add(6)
+        tree.add(11)
+        tree.add(120)
     }
 
 
@@ -37,9 +39,20 @@ abstract class AbstractHeadTailTest {
 
 
         set = tree.headSet(127)
-        for (i in 1..10)
+        for (i in 1..11)
             assertEquals(true, set.contains(i))
 
+        set = tree.headSet(180)
+        assertEquals(true, set.contains(120))
+        for (i in 1..11) {
+            assertEquals(true, set.contains(i))
+        }
+
+        set = tree.headSet(120)
+        assertEquals(false, set.contains(120))
+        for (i in 1..11) {
+            assertEquals(true, set.contains(i))
+        }
     }
 
     protected fun doTailSetTest() {
@@ -56,9 +69,15 @@ abstract class AbstractHeadTailTest {
         assertEquals(true, set.contains(10))
 
         set = tree.tailSet(-128)
-        for (i in 1..10)
+        for (i in 1..11)
             assertEquals(true, set.contains(i))
-
+        set = tree.tailSet(188)
+        assertEquals(false, set.contains(120))
+        for (i in 1..11) {
+            assertEquals(false, set.contains(i))
+        }
+        set = tree.tailSet(120)
+        assertEquals(true, set.contains(120))
     }
 
     protected fun doHeadSetRelationTest() {
