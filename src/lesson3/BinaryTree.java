@@ -243,28 +243,9 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
     @NotNull
     @Override
     public SortedSet<T> headSet(T toElement) {
-        SortedSet<T> aSetOfSmallerItems = new TreeSet<>();
-        searchForManySmallerSet(toElement, root, aSetOfSmallerItems);
-        return aSetOfSmallerItems;
+        // TODO
+        throw new NotImplementedError();
     }
-
-    private void searchForManySmallerSet(T toElement, Node<T> rootNode, SortedSet<T> smallItems) {
-        int comparison = rootNode.value.compareTo(toElement);
-        if (comparison < 0) {
-            smallItems.add(rootNode.value);
-            if (rootNode.right != null) {
-                searchForManySmallerSet(toElement, rootNode.right, smallItems);
-            }
-            if (rootNode.left != null) {
-                searchForManySmallerSet(toElement, rootNode.left, smallItems);
-            }
-        } else if (comparison == 0 && rootNode.left != null) {
-            searchForManySmallerSet(toElement, rootNode.left, smallItems);
-
-        }
-    }
-    //Ресурсоемкость:O(h), h - высота дерева
-    //Трудоемкость: O(h) - худший случай, O(logN) - в остальных случаях
 
 
     /**
@@ -274,27 +255,9 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
     @NotNull
     @Override
     public SortedSet<T> tailSet(T fromElement) {
-        SortedSet<T> aSetOfLargeOrEqualItems = new TreeSet<>();
-        searchForMultipleOrEqualSet(fromElement, root, aSetOfLargeOrEqualItems);
-        return aSetOfLargeOrEqualItems;
+        // TODO
+        throw new NotImplementedError();
     }
-
-    private void searchForMultipleOrEqualSet(T fromElement, Node<T> rootNode, SortedSet<T> bigItems) {
-        int comparison = rootNode.value.compareTo(fromElement);
-        if (comparison >= 0) {
-            bigItems.add(rootNode.value);
-            if (rootNode.right != null) {
-                searchForMultipleOrEqualSet(fromElement, rootNode.right, bigItems);
-            }
-            if (rootNode.left != null) {
-                searchForMultipleOrEqualSet(fromElement, rootNode.left, bigItems);
-            }
-        }else if (rootNode.right!=null){
-            searchForMultipleOrEqualSet(fromElement, rootNode.right, bigItems);
-        }
-    }
-    //Ресурсоемкость:O(h), h - высота дерева
-    //Трудоемкость: O(h) - худший случай, O(logN) - в остальных случаях
 
     @Override
     public T first() {
