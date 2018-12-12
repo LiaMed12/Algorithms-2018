@@ -2,6 +2,8 @@ package lesson6;
 
 import kotlin.NotImplementedError;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -69,8 +71,40 @@ public class JavaDynamicTasks {
      * В примере ответами являются 2, 8, 9, 12 или 2, 5, 9, 12 -- выбираем первую из них.
      */
     public static List<Integer> longestIncreasingSubSequence(List<Integer> list) {
-        throw new NotImplementedError();
+        int sizeOfTheOriginalList = list.size();
+        if (sizeOfTheOriginalList == 0) return list;
+        int[] arrayForRecoveryResponse = new int[sizeOfTheOriginalList];
+        int[] arrayForMaximumLength = new int[sizeOfTheOriginalList];
+        for (int i = 0; i < sizeOfTheOriginalList; i++) {
+            arrayForMaximumLength[i] = 1;
+            arrayForRecoveryResponse[i] = -1;
+            for (int k = 0; k < i; k++) {
+                if (list.get(k) < list.get(i) && arrayForMaximumLength[k] + 1 > arrayForMaximumLength[i]) {
+                    arrayForMaximumLength[i] = arrayForMaximumLength[k] + 1;
+                    arrayForRecoveryResponse[i] = k;
+                }
+            }
+        }
+        int p = 0;
+        int length = arrayForMaximumLength[0];
+        for (int i = 0; i < arrayForMaximumLength.length; i++) {
+            if (arrayForMaximumLength[i] > length) {
+                p = i;
+                length = arrayForMaximumLength[i];
+            }
+        }
+        List<Integer> answer = new ArrayList<>();
+        while (p != -1) {
+            answer.add(list.get(p));
+            p = arrayForRecoveryResponse[p];
+        }
+        Collections.reverse(answer);
+        return answer;
     }
+    //Идея для реализации была взята с сайта https://neerc.ifmo.ru/wiki/index.php?title==Задача_о_наибольшей_возрастающей_подпоследовательности
+    //Трудоемкость: O(n^2)
+    //Ресурсоемкость: O(n)
+
 
     /**
      * Самый короткий маршрут на прямоугольном поле.
